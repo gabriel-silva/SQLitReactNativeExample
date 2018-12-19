@@ -6,24 +6,50 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { 
+  StyleSheet,
+  Text,
+  View, 
+  FlatList
+} from 'react-native';
+import SQLite from 'react-native-sqlite-storage';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqlexample.db' });
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      list: ''
+    }
+
+    db.transaction((tx) => {
+      tx.executeSql('SELECT * FROM pessoa', [], (tx, results) => {
+        var len = results.rows.length;
+        if (len > 0) {
+          var arr = [];
+          for(var i = 0; i < len; i++){
+            arr.push(results.rows.item(i));
+          }
+          console.log(arr);
+          this.setState({ list: arr });
+        }
+      });
+    });
+
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <FlatList
+          data={this.state.list}
+          renderItem={({ item }) => <Text>{item.nome}</Text>}
+          keyExtractor={(item) => item.id.toString()}
+        />
       </View>
     );
   }
