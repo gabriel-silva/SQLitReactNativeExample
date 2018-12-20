@@ -10,7 +10,7 @@ const AppNavigator = createStackNavigator({
 	Page2       : {screen: Page2}
 }, 
 {
-	initialRouteName: 'Page2'
+	initialRouteName: 'Page1'
 });
 
 const AppContainer = createAppContainer(AppNavigator);

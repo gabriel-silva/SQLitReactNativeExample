@@ -22,7 +22,7 @@ import {
 export default class Page2 extends Component {
 
 	static navigationOptions = {
-		title: 'Adicinar Pessoa',
+		title: 'Adicionar Pessoa',
 	};
 
 	_adicionarPessoa = (id, nome, email, cidade, idade) => {
