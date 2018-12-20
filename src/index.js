@@ -8,6 +8,9 @@ import Page2 from './componentes/Page2';
 const AppNavigator = createStackNavigator({
 	Page1       : {screen: Page1},
 	Page2       : {screen: Page2}
+}, 
+{
+	initialRouteName: 'Page2'
 });
 
 const AppContainer = createAppContainer(AppNavigator);

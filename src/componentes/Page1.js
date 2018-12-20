@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, Button, View, FlatList } from 'react-native';
-import SQLite from 'react-native-sqlite-storage';
-
-var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqlexample.db' });
+import { 
+	StyleSheet,
+	Text,
+	Button,
+	View,
+	FlatList
+} from 'react-native';
+import {
+	ConnectionDatabase
+} from '../service';
 
 export default class Page1 extends Component {
 
@@ -17,7 +23,7 @@ export default class Page1 extends Component {
 	    	list: ''
 	    }
 
-	    db.transaction((tx) => {
+	    ConnectionDatabase.transaction((tx) => {
 	    	tx.executeSql('SELECT * FROM pessoa', [], (tx, results) => {
 	        	var len = results.rows.length;
 	        
@@ -49,7 +55,8 @@ export default class Page1 extends Component {
 
 	        	<Button
 		        	title="Adicionar"
-		    		onPress={() => this.props.navigation.navigate('Page2')}/>
+		    		onPress={() => this.props.navigation.navigate('Page2')} />
+					
       		</View>
     	);
  	}

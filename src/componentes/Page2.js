@@ -1,77 +1,137 @@
-import React, {Component} from 'react';
-import { Button } from 'react-native';
-import { Container, Content, Form, Item, Label, Input } from 'native-base';
-import SQLite from 'react-native-sqlite-storage';
-
-var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqlexample.db' });
+import React, { Component } from 'react';
+import {
+	View,
+	Text
+} from 'react-native';
+import {
+	Container,
+	Content,
+	Form,
+	Item,
+	Label,
+	Input,
+	Button
+} from 'native-base';
+import {
+	ConnectionDatabase
+} from '../service';
+import {
+	Dimensions
+} from '../util';
 
 export default class Page2 extends Component {
 
 	static navigationOptions = {
-	    title: 'Welcome Page 2',
+		title: 'Adicinar Pessoa',
 	};
 
 	_adicionarPessoa = (id, nome, email, cidade, idade) => {
 
-		db.transaction((tx) => {
-	    	tx.executeSql('INSERT INTO pessoa (id, nome, email, cidade, idade) values (?, ?, ?, ?, ?)', [id, nome, email, cidade, idade], (tx, results) => {
-	        	var len = results.rows.length;
-	        
-	        	if (len > 0) {
-	          		var arr = [];
-	          
-	          		for(var i = 0; i < len; i++){
-	            		arr.push(results.rows.item(i));
-	          		}
-	          	
-		          	console.log(arr);
-		          	this.setState({ list: arr });
-	        	}
-	      	});
-	    });
+		ConnectionDatabase.transaction((tx) => {
+			tx.executeSql('INSERT INTO pessoa (id, nome, email, cidade, idade) values (?, ?, ?, ?, ?)', [id, nome, email, cidade, idade], (tx, results) => {
+				var len = results.rows.length;
+
+				if (len > 0) {
+					var arr = [];
+
+					for (var i = 0; i < len; i++) {
+						arr.push(results.rows.item(i));
+					}
+
+					console.log(arr);
+					this.setState({ list: arr });
+				}
+			});
+		});
 	}
 
 	render() {
-	    
-	    return (
 
-	    	<Container>
+		return (
 
-	    		<Content>
+			<Container>
 
-					<Form>
+				<Content>
 
-						<Item floatingLabel>
-							<Label>Id</Label>
-							<Input />
-			            </Item>
+					<View style={{ flex: 3 }}>
 
-						<Item floatingLabel>
-							<Label>Nome</Label>
-							<Input />
-			            </Item>
+						<Form style={{
+							width: Dimensions.LARGURA_DO_DISPOSITIVO / 1.01,
+							alignSelf: 'center',
+						}}>
 
-			            <Item floatingLabel>
-							<Label>Email</Label>
-							<Input />
-			            </Item>
+							<Item
+								style={{
+									marginLeft: 0,
+									marginRight: 0
+								}}
+								floatingLabel>
+								<Label>Id</Label>
+								<Input />
+							</Item>
 
-			            <Item floatingLabel>
-							<Label>Cidade</Label>
-							<Input />
-			            </Item>
+							<Item
+								style={{
+									marginLeft: 0,
+									marginRight: 0
+								}}
+								floatingLabel>
+								<Label>Nome</Label>
+								<Input />
+							</Item>
 
-			            <Item floatingLabel>
-							<Label>Idade</Label>
-							<Input />
-			            </Item>
-					</Form>
+							<Item
+								style={{
+									marginLeft: 0,
+									marginRight: 0
+								}}
+								floatingLabel>
+								<Label>Email</Label>
+								<Input />
+							</Item>
 
-					<Button
-			        	title="Salvar"
-			    		onPress={() => this._adicionarPessoa(id, nome, email, cidade, idade)} />
+							<Item
+								style={{
+									marginLeft: 0,
+									marginRight: 0
+								}}
+								floatingLabel>
+								<Label>Cidade</Label>
+								<Input />
+							</Item>
+
+							<Item
+								style={{
+									marginLeft: 0,
+									marginRight: 0
+								}}
+								floatingLabel>
+								<Label>Idade</Label>
+								<Input />
+							</Item>
+						</Form>
+
+					</View>
+
+					<View style={{
+						marginTop: 5,
+						width: Dimensions.LARGURA_DO_DISPOSITIVO / 1.01,
+						alignSelf: 'center'
+					}}>
+						<Button
+							block
+							onPress={() => this._adicionarPessoa(id, nome, email, cidade, idade)} >
+							<Text style={{
+								fontSize: 14,
+								textAlign: "center",
+								color: 'white'
+							}}>SALVAR</Text>
+						</Button>
+					</View>
+
 				</Content>
-	    	</Container>
-	    );
+
+			</Container>
+		);
 	}
 }
